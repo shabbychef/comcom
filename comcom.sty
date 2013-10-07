@@ -1,0 +1,60 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{comcom}[2013/10/07 v0.2 (S. E. Pav)]
+
+%copyright%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FOLDUP
+% comcom.sty
+% Steven E. Pav
+% Copyright 2003-2013
+% 
+% distributed under the LGPL v. 3
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%UNFOLD
+
+\typeout{-- reading comcom.sty file}
+
+\RequirePackage{ifthen}
+\RequirePackage{xspace}
+
+\newboolean{COMCOM@environments}
+\newboolean{COMCOM@commands}
+
+\DeclareOption{environments}{\setboolean{COMCOM@environments}{true}}
+\DeclareOption{commands}{\setboolean{COMCOM@commands}{true}}
+
+\DeclareOption*{\setboolean{COMCOM@\CurrentOption}{false}}
+
+%\ExecuteOptions{commands}
+\ProcessOptions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% load appropriate substyles
+
+% wha?
+\providecommand{\COMbbb}[1]{\Bbb{#1}}
+\PassOptionsToPackage{leqno,fleqn,intlimits}{empheq}
+\RequirePackage{empheq}
+%		superseded by empheq
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amsthm}
+%for bold symbol vectors?:
+\RequirePackage{amsbsy}
+\PassOptionsToPackage{mathscr}{eucal}
+\RequirePackage{eucal}
+
+% wha?
+\renewcommand{\Bbb}[1]{\mathbb{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{COMCOM@environments}}
+	{\InputIfFileExists{comenviro.sty}{}{%
+		\PackageError{comcom}{file comenviro.sty not found}{}}}
+	{}
+\ifthenelse{\boolean{COMCOM@commands}}
+	{\InputIfFileExists{comcommands.sty}{}{%
+		\PackageError{comcom}{file comcommands.sty not found}{}}}
+	{}
+
+\typeout{-- finished comcom}
+%for vim modeline: (do not edit)
+% vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=%%s:syn=tex:ft=tex
